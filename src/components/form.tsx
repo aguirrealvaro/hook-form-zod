@@ -34,8 +34,8 @@ const Form: FunctionComponent = () => {
         <label htmlFor="gender">Gender:</label>
         <select className="rounded border p-2" id="gender" {...register("gender")}>
           <option hidden>Select gender</option>
-          <option value="female">male</option>
           <option value="male">male</option>
+          <option value="female">female</option>
         </select>
       </div>
       <button type="submit" className="rounded bg-sky-600 p-2 text-white">
