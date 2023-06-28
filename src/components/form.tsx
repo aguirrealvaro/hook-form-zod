@@ -23,12 +23,14 @@ const Form: FunctionComponent = () => {
     console.log(data);
   };
 
+  console.log(errors);
+
   const address = watch("address");
 
   return (
     <div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-4 flex flex-col gap-2">
+        <div className="mb-4 flex flex-col gap-1">
           <label htmlFor="name">First name:</label>
           <Input
             id="name"
@@ -42,6 +44,7 @@ const Form: FunctionComponent = () => {
             id="age"
             {...register("age", {
               required: { value: true, message: "Required field" },
+              pattern: { value: /^[0-9]+$/, message: "Only numbers" },
               min: { value: 18, message: "Min: 18" },
               max: { value: 70, message: "Max: 70" },
             })}
@@ -68,6 +71,7 @@ const Form: FunctionComponent = () => {
               required: { value: true, message: "Required field" },
               minLength: { value: 8, message: "Length 8" },
               maxLength: { value: 8, message: "Length 8" },
+              pattern: { value: /^[0-9]+$/, message: "Only numbers" },
             })}
           />
           {errors.dni && <span className="text-red-500">{errors.dni.message}</span>}
@@ -79,6 +83,8 @@ const Form: FunctionComponent = () => {
             {...register("email", {
               required: { value: true, message: "Required field" },
               pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Mail invalido" },
+              // custom validation
+              //validate: (value, formValue) => value === formValue.name
             })}
           />
           {errors.email && <span className="text-red-500">{errors.email.message}</span>}
