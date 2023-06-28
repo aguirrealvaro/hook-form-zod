@@ -22,6 +22,8 @@ const Form: FunctionComponent = () => {
     console.log(data);
   };
 
+  console.log(errors);
+
   const address = watch("address");
 
   return (
@@ -61,7 +63,15 @@ const Form: FunctionComponent = () => {
         </div>
         <div className="mb-4 flex flex-col gap-2">
           <label htmlFor="dni">DNI:</label>
-          <Input id="dni" {...register("dni")} />
+          <Input
+            id="dni"
+            {...register("dni", {
+              required: { value: true, message: "Required field" },
+              minLength: { value: 8, message: "Length 8" },
+              maxLength: { value: 8, message: "Length 8" },
+            })}
+          />
+          {errors.dni && <span className="text-red-500">{errors.dni.message}</span>}
         </div>
         <button type="submit" className="rounded bg-sky-600 p-2 text-white">
           Submit
