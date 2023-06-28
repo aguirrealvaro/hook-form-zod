@@ -1,3 +1,3 @@
-# React Vite Template
+# hook-form-zod
 
-Template of a react production-ready application with Vite, Typescript, Tailwind, Prettier, ESlint, and Pre-commit
+Practicing with react-hook-form and zod libraries
