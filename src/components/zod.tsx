@@ -1,15 +1,19 @@
 import { FunctionComponent } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { z } from "zod";
 import { Input } from "@/components";
 
-type Fields = {
-  name: string;
-  age: number;
-  address: number;
-  gender: "male" | "female";
-  dni: number;
-  email: string;
-};
+const validationSchema = z.object({
+  name: z.string().min(1, { message: "Required field" }),
+  age: z.number().min(18, { message: "Min 18" }).max(70, { message: "Max 70" }),
+  address: z.string().min(1, { message: "Required field" }),
+  dni: z.number().min(8, { message: "length" }).max(8, { message: "8 length" }),
+  gender: z.enum(["male", "female"]),
+  email: z.string().min(1, { message: "Required field" }).email({ message: "Invalid email" }),
+});
+
+type Fields = z.infer<typeof validationSchema>;
 
 const Zod: FunctionComponent = () => {
   const {
@@ -18,7 +22,10 @@ const Zod: FunctionComponent = () => {
     formState: { errors },
     watch,
     reset,
-  } = useForm<Fields>({ defaultValues: { name: "" } });
+  } = useForm<Fields>({
+    resolver: zodResolver(validationSchema),
+    defaultValues: { name: "" },
+  });
   const onSubmit: SubmitHandler<Fields> = (data) => {
     // eslint-disable-next-line no-console
     console.log(data);
@@ -35,23 +42,12 @@ const Zod: FunctionComponent = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-4 flex flex-col gap-1">
           <label htmlFor="name">First name:</label>
-          <Input
-            id="name"
-            {...register("name", { required: { value: true, message: "Required field" } })}
-          />
+          <Input id="name" {...register("name")} />
           {errors.name && <span className="text-red-500">{errors.name.message}</span>}
         </div>
         <div className="mb-4 flex flex-col gap-2">
           <label htmlFor="age">Age:</label>
-          <Input
-            id="age"
-            {...register("age", {
-              required: { value: true, message: "Required field" },
-              pattern: { value: /^[0-9]+$/, message: "Only numbers" },
-              min: { value: 18, message: "Min: 18" },
-              max: { value: 70, message: "Max: 70" },
-            })}
-          />
+          <Input id="age" {...register("age", { valueAsNumber: true })} />
           {errors.age && <span className="text-red-500">{errors.age.message}</span>}
         </div>
         <div className="mb-4 flex flex-col gap-2">
@@ -65,31 +61,16 @@ const Zod: FunctionComponent = () => {
             <option value="male">male</option>
             <option value="female">female</option>
           </select>
+          {errors.gender && <span className="text-red-500">{errors.gender.message}</span>}
         </div>
         <div className="mb-4 flex flex-col gap-2">
           <label htmlFor="dni">DNI:</label>
-          <Input
-            id="dni"
-            {...register("dni", {
-              required: { value: true, message: "Required field" },
-              minLength: { value: 8, message: "Length 8" },
-              maxLength: { value: 8, message: "Length 8" },
-              pattern: { value: /^[0-9]+$/, message: "Only numbers" },
-            })}
-          />
+          <Input id="dni" {...register("dni", { valueAsNumber: true })} />
           {errors.dni && <span className="text-red-500">{errors.dni.message}</span>}
         </div>
         <div className="mb-4 flex flex-col gap-2">
           <label htmlFor="email">Email:</label>
-          <Input
-            id="email"
-            {...register("email", {
-              required: { value: true, message: "Required field" },
-              pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Mail invalido" },
-              // custom validation
-              //validate: (value, formValue) => value === formValue.name
-            })}
-          />
+          <Input id="email" {...register("email")} />
           {errors.email && <span className="text-red-500">{errors.email.message}</span>}
         </div>
         <button onClick={resetFields}>reset fields</button>

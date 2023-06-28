@@ -5,7 +5,7 @@ import { Input } from "@/components";
 type Fields = {
   name: string;
   age: number;
-  address: number;
+  address: string;
   gender: "male" | "female";
   dni: number;
   email: string;
