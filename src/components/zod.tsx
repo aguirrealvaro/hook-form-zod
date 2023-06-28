@@ -6,7 +6,10 @@ import { Input } from "@/components";
 
 const validationSchema = z.object({
   name: z.string().min(1, { message: "Required field" }),
-  age: z.number().min(18, { message: "Min 18" }).max(70, { message: "Max 70" }),
+  age: z
+    .number({ required_error: "Required field" })
+    .min(18, { message: "Min 18" })
+    .max(70, { message: "Max 70" }),
   address: z.string().min(1, { message: "Required field" }),
   dni: z.number().min(8, { message: "length" }).max(8, { message: "8 length" }),
   gender: z.enum(["male", "female"]),
@@ -47,7 +50,13 @@ const Zod: FunctionComponent = () => {
         </div>
         <div className="mb-4 flex flex-col gap-2">
           <label htmlFor="age">Age:</label>
-          <Input id="age" {...register("age", { valueAsNumber: true })} />
+          <Input
+            id="age"
+            type="number"
+            {...register("age", {
+              setValueAs: (v) => (v === "" ? undefined : parseInt(v, 10)),
+            })}
+          />
           {errors.age && <span className="text-red-500">{errors.age.message}</span>}
         </div>
         <div className="mb-4 flex flex-col gap-2">
@@ -66,7 +75,7 @@ const Zod: FunctionComponent = () => {
         </div>
         <div className="mb-4 flex flex-col gap-2">
           <label htmlFor="dni">DNI:</label>
-          <Input id="dni" {...register("dni", { valueAsNumber: true })} />
+          <Input id="dni" {...register("dni")} />
           {errors.dni && <span className="text-red-500">{errors.dni.message}</span>}
         </div>
         <div className="mb-4 flex flex-col gap-2">
