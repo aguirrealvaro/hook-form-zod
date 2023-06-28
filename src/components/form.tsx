@@ -8,6 +8,7 @@ type Fields = {
   address: number;
   gender: "male" | "female";
   dni: number;
+  email: string;
 };
 
 const Form: FunctionComponent = () => {
@@ -21,8 +22,6 @@ const Form: FunctionComponent = () => {
     // eslint-disable-next-line no-console
     console.log(data);
   };
-
-  console.log(errors);
 
   const address = watch("address");
 
@@ -72,6 +71,17 @@ const Form: FunctionComponent = () => {
             })}
           />
           {errors.dni && <span className="text-red-500">{errors.dni.message}</span>}
+        </div>
+        <div className="mb-4 flex flex-col gap-2">
+          <label htmlFor="email">Email:</label>
+          <Input
+            id="email"
+            {...register("email", {
+              required: { value: true, message: "Required field" },
+              pattern: { value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/, message: "Mail invalido" },
+            })}
+          />
+          {errors.email && <span className="text-red-500">{errors.email.message}</span>}
         </div>
         <button type="submit" className="rounded bg-sky-600 p-2 text-white">
           Submit
