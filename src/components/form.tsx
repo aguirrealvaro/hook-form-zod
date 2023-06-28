@@ -25,7 +25,7 @@ const Form: FunctionComponent = () => {
   };
 
   const resetFields = () => {
-    reset(undefined, { keepErrors: false });
+    reset();
   };
 
   const address = watch("address");
