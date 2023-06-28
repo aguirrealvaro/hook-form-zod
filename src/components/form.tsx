@@ -17,13 +17,16 @@ const Form: FunctionComponent = () => {
     handleSubmit,
     formState: { errors },
     watch,
-  } = useForm<Fields>({ defaultValues: { name: "Alvaro" } });
+    reset,
+  } = useForm<Fields>({ defaultValues: { name: "" } });
   const onSubmit: SubmitHandler<Fields> = (data) => {
     // eslint-disable-next-line no-console
     console.log(data);
   };
 
-  console.log(errors);
+  const resetFields = () => {
+    reset(undefined, { keepErrors: false });
+  };
 
   const address = watch("address");
 
@@ -89,6 +92,7 @@ const Form: FunctionComponent = () => {
           />
           {errors.email && <span className="text-red-500">{errors.email.message}</span>}
         </div>
+        <button onClick={resetFields}>reset fields</button>
         <button type="submit" className="rounded bg-sky-600 p-2 text-white">
           Submit
         </button>
