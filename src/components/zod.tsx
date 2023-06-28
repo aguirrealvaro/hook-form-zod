@@ -53,6 +53,7 @@ const Zod: FunctionComponent = () => {
         <div className="mb-4 flex flex-col gap-2">
           <label htmlFor="address">Address:</label>
           <Input id="address" {...register("address")} />
+          {errors.address && <span className="text-red-500">{errors.address.message}</span>}
         </div>
         <div className="mb-4 flex flex-col gap-2">
           <label htmlFor="gender">Gender:</label>
