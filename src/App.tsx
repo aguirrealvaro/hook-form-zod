@@ -1,13 +1,15 @@
-/* eslint-disable no-console */
 import { FunctionComponent } from "react";
 import "@/styles/globals.css";
-
-console.log(process.env.MODE);
-console.log(process.env.API_HOST);
-console.log(process.env.APP_VERSION);
+import { Form, Wrapper } from "@/components";
 
 const App: FunctionComponent = () => {
-  return <h1 className="text-xl">Hello world</h1>;
+  return (
+    <div className="my-8">
+      <Wrapper>
+        <Form />
+      </Wrapper>
+    </div>
+  );
 };
 
 export default App;
